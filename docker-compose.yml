@@ -1,0 +1,19 @@
+services:
+  hermes:
+    image: ghcr.io/sjroesink/pa:latest
+    container_name: hermes-agent
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - HERMES_HOME=/data/hermes
+      - TERMINAL_ENV=local
+    volumes:
+      - hermes-data:/data/hermes
+    # Uncomment to expose gateway API port:
+    # ports:
+    #   - "8080:8080"
+
+volumes:
+  hermes-data:
+    driver: local
