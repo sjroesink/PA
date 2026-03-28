@@ -105,6 +105,13 @@ RUN groupadd -g 100 hermes 2>/dev/null || true \
     && mkdir -p /data/hermes \
     && chown -R 99:100 /data/hermes
 
+# Ensure SSH sessions get the same environment as the container
+RUN echo 'export PATH="/opt/hermes/venv/bin:/opt/hermes/app/node_modules/.bin:$PATH"' >> /home/hermes/.bashrc \
+    && echo 'export VIRTUAL_ENV=/opt/hermes/venv' >> /home/hermes/.bashrc \
+    && echo 'export HERMES_HOME=/data/hermes' >> /home/hermes/.bashrc \
+    && echo 'export PYTHONUNBUFFERED=1' >> /home/hermes/.bashrc \
+    && echo 'cd /opt/hermes/app' >> /home/hermes/.bashrc
+
 EXPOSE 22
 
 USER hermes
