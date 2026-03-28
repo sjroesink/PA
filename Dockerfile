@@ -65,7 +65,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git ripgrep ffmpeg curl ca-certificates \
     software-properties-common gpg-agent \
-    && rm -rf /var/lib/apt/lists/*
+    openssh-server sudo \
+    && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /run/sshd
 
 # Python 3.11 runtime (no dev headers)
 RUN add-apt-repository ppa:deadsnakes/ppa \
@@ -99,8 +101,11 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 # Create hermes user with Unraid-compatible UID/GID (nobody:users = 99:100)
 RUN groupadd -g 100 hermes 2>/dev/null || true \
     && useradd -u 99 -g 100 -m -s /bin/bash hermes \
+    && echo "hermes ALL=(ALL) NOPASSWD: /usr/sbin/sshd" >> /etc/sudoers \
     && mkdir -p /data/hermes \
     && chown -R 99:100 /data/hermes
+
+EXPOSE 22
 
 USER hermes
 

@@ -8,12 +8,15 @@ services:
     environment:
       - HERMES_HOME=/data/hermes
       - TERMINAL_ENV=local
+      - ENABLE_SSH=true
     volumes:
       - hermes-data:/data/hermes
-    # Uncomment to expose gateway API port:
-    # ports:
-    #   - "8080:8080"
+      - hermes-ssh:/data/hermes/.ssh
+    ports:
+      - "8022:22"
 
 volumes:
   hermes-data:
+    driver: local
+  hermes-ssh:
     driver: local
