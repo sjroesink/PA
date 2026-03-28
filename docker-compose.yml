@@ -10,13 +10,6 @@ services:
       - TERMINAL_ENV=local
       - ENABLE_SSH=true
     volumes:
-      - hermes-data:/data/hermes
-      - hermes-ssh:/data/hermes/.ssh
+      - /mnt/user/appdata/hermes-agent:/data/hermes
     ports:
       - "8022:22"
-
-volumes:
-  hermes-data:
-    driver: local
-  hermes-ssh:
-    driver: local
